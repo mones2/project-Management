@@ -25,12 +25,12 @@ function App() {
   function handleAddProject(projectDate){
     setProjectState(pre =>{
       const newProject = {
-        ...projectData,
-        id: Math.rondom()
+        ...projectDate,
+        id: Math.random()
       };
       return {
         ...pre,
-        project: [...pre.projects,project]
+        project: [...pre.projects,newProject]
       };
     });
   }
@@ -46,7 +46,6 @@ function App() {
      content = <NewProject onAdd={handleAddProject}/>
   return (
     <main className="h-screen my-8 flex gap-8 ">
-
       <Sidebar  onStartAddProject={handleStartAddProject}/>
       {content}
     </main>
