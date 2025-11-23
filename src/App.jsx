@@ -2,6 +2,7 @@ import { useState} from "react";
 import NewProject from "./components/NewProject";
 import Sidebar from "./components/Sidebar";
 import NoProjectSelected from "./components/NoProjectSelected";
+import SelectedProject from './components/SelectedProject'
 function App() {
   const [projectState,setProjectState] = useState({
     selectedProjectId: undefined, 
@@ -10,8 +11,24 @@ function App() {
     projects: [],
   });
 
-  
 
+  function handleSelecteProject(id){
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId:id
+      }
+    });
+  }
+  
+  function handelCancelAddProject (){
+    setProjectState(pre => {
+      return {
+        ...pre,
+        selectedProjectId: undefined,
+      }
+    });
+  }
   function handleStartAddProject(){
     setProjectState(pre => {
       return {
@@ -38,16 +55,18 @@ function App() {
 
   console.log(projectState);
 
-  let content ;
+  const selectedProject = projectState.projects.find(project => project.id == projectState.selectedProjectId);
+
+  let content = <SelectedProject project={selectedProject}/> ;
   if (projectState.selectedProjectId === undefined)
   {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
   if (projectState.selectedProjectId === null)
-     content = <NewProject onAdd={handleAddProject}/>
+     content = <NewProject onAdd={handleAddProject} onCancel={handelCancelAddProject}/>
   return (
     <main className="h-screen my-8 flex gap-8 ">
-      <Sidebar  onStartAddProject={handleStartAddProject} projects = {projectState.projects}/>
+      <Sidebar onSelecteProject = {handleSelecteProject} onStartAddProject={handleStartAddProject} projects = {projectState.projects}/>
       {content}
     </main>
   );
